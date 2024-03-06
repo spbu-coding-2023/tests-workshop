@@ -13,7 +13,7 @@ import kotlin.random.Random
 import kotlin.test.assertFailsWith
 
 class SorterTest {
-    private lateinit var sorter : Sorter
+    private lateinit var sorter: Sorter
 
     @BeforeEach
     fun setup() {
@@ -25,14 +25,14 @@ class SorterTest {
     //Edge cases
     @Test
     fun emptyArrayShouldBeEmptyAfterSort() {
-        sorter = BubbleSorter()
+        val sorter = BubbleSorter()
 
         val testArray = intArrayOf()
         val expectedResult = intArrayOf()
         val actualResult = sorter.sortPositiveNumbers(testArray)
 
         assert(expectedResult contentEquals actualResult)
-        {"Sorting the empty array returned non-empty result"}
+        { "Sorting the empty array returned non-empty result" }
     }
 
     @Test
@@ -85,8 +85,8 @@ class SorterTest {
 
     @ParameterizedTest
     @MethodSource("times")
-    fun sortingShouldNotExceedTimeout(size : Int, seconds : Long) {
-   val testArray = IntArray(size) { Random.nextInt(1,100)}
+    fun sortingShouldNotExceedTimeout(size: Int, seconds: Long) {
+        val testArray = IntArray(size) { Random.nextInt(1, 100) }
         Assertions.assertTimeout(Duration.ofSeconds(seconds)) { sorter.sortPositiveNumbers(testArray) }
     }
 
