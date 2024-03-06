@@ -1,0 +1,203 @@
+\documentclass{beamer}
+%Для защит онлайн лучше использовать разрешение 16x9
+%\documentclass[aspectratio=169]{beamer}
+
+\input{preamble.tex}
+
+% То, что в квадратных скобках, отображается внизу по центру каждого слайда.
+\title[Тестирование]{Тестирование и Kotlin}
+
+% То, что в квадратных скобках, отображается в левом нижнем углу.
+\institute[СПбГУ]{}
+
+% То, что в квадратных скобках, отображается в левом нижнем углу.
+\author[Кутуев Владимир]{}
+
+\begin{document}
+{
+\setbeamertemplate{footline}{}
+% Лого университета или организации, отображается в шапке титульного листа
+\begin{frame}
+  \includegraphics[width=1.4cm]{pictures/SPbGU_Logo.png}
+\vspace{-35pt}
+\hspace{-10pt}
+\begin{center}
+   \begin{tabular}{c}
+        \scriptsize{Санкт-Петербургский государственный университет} \\
+        \scriptsize{Кафедра системного программирования}
+    \end{tabular}
+\titlepage
+\end{center}
+
+\btVFill
+
+\begin{center}
+  \vspace{5pt}
+  \scriptsize{Санкт-Петербург\\
+                 2024}
+  \end{center}
+
+\end{frame}
+}
+
+\begin{frame}[fragile]
+  \frametitle{Аксиомы Шуры-Буры}
+  \begin{enumerate}
+    \item Любая программа содержит ошибки
+    \item Если программа не содержит ошибок, то их содержит спецификация, по которой программа разрабатывалась
+    \item Если ни программа, ни спецификация ошибок не содержат, то такая программа никому не нужна
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Много ли ошибок в коде?}
+  \begin{itemize}
+    \item Согласно C. Kaner <<Testing computer software>> (1988)
+    \begin{itemize}
+      \item после передачи в тестирование 1-3 ошибки на 100 строк
+      \item в процессе разработки 1.5 ошибки на 1 строку
+      \item исправление 10 операторов происходит верно в 50\% случаев
+    \end{itemize}
+    \item Числительные не столь принципиальны, важна картина в целом...
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Тестирование}
+  \begin{itemize}
+    \item Система --- белый ящик
+    \item Система --- чёрный ящик
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ручное тестирование}
+  \begin{itemize}
+    \item Наиболее дешёвое
+    \item Требует несколько меньшей квалификации
+    \item Тестирование UI сложно автоматизируется
+    \item Можно быстро произвести в ходе разработки
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Автоматизированное тестирование}
+  \begin{itemize}
+    \item Требует навыков программирования
+    \item Не любой код можно написать автотестируемым
+    \item Тесты требуется поддерживать и сопровождать
+    \item Чем чаще релизы, тем оно нужнее
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Модульные (Unit) тесты}
+  \begin{itemize}
+    \item Тестирование отдельного класса
+    \item Проверяют внешнее поведение класса
+    \item Полностью автоматические
+    \item Направлены на поиск ошибок в конкретном методе
+    \item Не влияют на функциональность системы и не поставляются пользователю
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Три А}
+  \begin{itemize}
+    \item Arrange
+    \item Act
+    \item Assert
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Пример 1}
+  \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{blue}{public fun} max(x: \textcolor{blue}{Int}, y: \textcolor{blue}{Int}): \textcolor{blue}{Int} \{
+    \textcolor{purple}{if} (x > y) \{
+        \textcolor{blue}{return} x;
+    \} \textcolor{purple}{else} \{
+        \textcolor{blue}{return} y;
+    \}
+\}
+  \end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Пример 2}
+  \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{blue}{public fun} simpleCondition(c: \textcolor{blue}{SimpleDataClass}): \textcolor{blue}{Int} \{
+    \textcolor{purple}{if} (c.a < 5 && c.b > 10) \{
+        \textcolor{blue}{return} 0;
+    \} \textcolor{purple}{else} \{
+        c.a = 3;
+        \textcolor{blue}{return} c.a;
+    \}
+\}
+  \end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Пример 3}
+  \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{blue}{public fun} byteArray(a: \textcolor{blue}{Array<Byte>}, x: \textcolor{blue}{Byte}): \textcolor{blue}{Byte} \{
+    \textcolor{purple}{if} (a.length != 2) \{
+        \textcolor{blue}{return} -1;
+    \}
+    a[0] = 5;
+    a[1] = x;
+    \textcolor{purple}{if} (a[0] + a[1] > 20) \{
+        \textcolor{blue}{return} 1;
+    \}
+    \textcolor{blue}{return} 0;
+\}
+  \end{Verbatim}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Kotlin}
+  \begin{itemize}
+    \item JUnit 4, JUnit 5, TestNg --- наследие Java
+    \item AssertJ, AssertK
+    \item Mocking: Mockito (Mockito-Kotlin), Powermock
+    \item BDD Tests: kotest, spek
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Best practices (Для Unit-тестов)}
+  \begin{itemize}
+    \item Независимость тестов
+    \begin{itemize}
+      \item Желательно, чтобы поломка одного куска функциональности ломала один тест
+    \end{itemize}
+    \item Тесты должны работать быстро
+    \begin{itemize}
+      \item И запускаться после каждой сборки (CI)
+    \end{itemize}
+    \item Тестов должно быть много
+    \begin{itemize}
+      \item Следить за Code coverage
+    \end{itemize}
+    \item Каждый тест должен проверять конкретный тестовый сценарий
+    \item Test-driven development
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Test driven development (TDD)}
+  Разработка непрерывно проходит следующие этапы:
+  \begin{itemize}
+    \item идея новой функциональности
+    \item написание теста: как оно должно работать
+    \item проверка, что тесты падают
+    \item первичная реализация
+    \item отладка до прохождения теста
+    \item проверка прохождения предыдущих тестов
+    \item рефакторинг
+    \item проверка прохождения теста
+  \end{itemize}
+\end{frame}
+
+\end{document}
